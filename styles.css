@@ -1,0 +1,52 @@
+body {
+    background-color: black;
+    color: white;
+}
+
+.container {
+    margin: 20px auto;
+    width: 80%;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid white;
+}
+
+td:first-child {
+    border-right: none;
+}
+
+img {
+    width: 30px;
+    height: 30px;
+}
+
+input[type="text"] {
+    width: 750px;
+    margin-right: 10px; 
+    background-color: black;
+    color: white;
+    padding: 12px;
+    border: 1px solid #ccc;
+}
+
+input[type="text"]::placeholder {
+    color: white;
+}
+
+button {
+    font-size: 16px;
+    padding: 10px;
+    background-color: black;
+    color: white;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    margin-right: 10px; 
+}
