@@ -62,18 +62,36 @@ function renderCryptoTable(data) {
     });
 }
 
-function searchByName() {
-    const input = document.getElementById('searchInput').value.toLowerCase();
-    const rows = Array.from(document.getElementById('cryptoTableBody').querySelectorAll('tr'));
-    rows.forEach(row => {
-        const name = row.children[1].textContent.toLowerCase();
-        if (name.includes(input)) {
-            row.style.display = '';
-        } else {
-            row.style.display = 'none';
+document.addEventListener('DOMContentLoaded', function () {
+    fetchData();
+    const searchInput = document.getElementById('searchInput');
+    searchInput.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            searchByName();
         }
     });
+});
+
+async function searchByName() {
+    const input = document.getElementById('searchInput').value.toLowerCase();
+    
+    try {
+        const response = await fetch('data.json');
+        const data = await response.json();
+        
+        const filteredData = data.filter(crypto => {
+            const nameMatch = crypto.name.toLowerCase().includes(input);
+            const symbolMatch = crypto.symbol.toLowerCase().includes(input);
+            return nameMatch || symbolMatch;
+        });
+        
+        renderCryptoTable(filteredData);
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
 }
+
+
 
 function sortByMarketCap() {
     const cryptoTableBody = document.getElementById('cryptoTableBody');
