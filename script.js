@@ -1,5 +1,19 @@
 document.addEventListener('DOMContentLoaded', function () {
     fetchData();
+    const searchInput = document.getElementById('searchInput');
+    let debounceTimeout;
+
+    searchInput.addEventListener('input', function(event) {
+        clearTimeout(debounceTimeout);
+        debounceTimeout = setTimeout(searchByName, 300); // Debounce time set to 300ms
+    });
+
+    searchInput.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            clearTimeout(debounceTimeout);
+            searchByName();
+        }
+    });
 });
 
 async function fetchData() {
@@ -27,12 +41,12 @@ function renderCryptoTable(data) {
 
         const nameCell = document.createElement('td');
         nameCell.textContent = crypto.name;
-        nameCell.style.padding = '0'; 
+        nameCell.style.padding = '0';
         row.appendChild(nameCell);
 
         const symbolCell = document.createElement('td');
         symbolCell.textContent = crypto.symbol;
-        symbolCell.style.padding = '0'; 
+        symbolCell.style.padding = '0';
         row.appendChild(symbolCell);
 
         const priceCell = document.createElement('td');
@@ -62,36 +76,21 @@ function renderCryptoTable(data) {
     });
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-    fetchData();
-    const searchInput = document.getElementById('searchInput');
-    searchInput.addEventListener('keydown', function(event) {
-        if (event.key === 'Enter') {
-            searchByName();
-        }
-    });
-});
-
 async function searchByName() {
     const input = document.getElementById('searchInput').value.toLowerCase();
-    
     try {
         const response = await fetch('data.json');
         const data = await response.json();
-        
         const filteredData = data.filter(crypto => {
             const nameMatch = crypto.name.toLowerCase().includes(input);
             const symbolMatch = crypto.symbol.toLowerCase().includes(input);
             return nameMatch || symbolMatch;
         });
-        
         renderCryptoTable(filteredData);
     } catch (error) {
         console.error('Error fetching data:', error);
     }
 }
-
-
 
 function sortByMarketCap() {
     const cryptoTableBody = document.getElementById('cryptoTableBody');
