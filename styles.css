@@ -13,12 +13,13 @@ table {
     border-collapse: collapse;
 }
 
-td {
+th, td {
     padding: 10px;
     text-align: center;
     border-bottom: 1px solid white;
 }
 
+th:first-child,
 td:first-child {
     border-right: none;
 }
